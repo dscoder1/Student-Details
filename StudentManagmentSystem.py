@@ -2,20 +2,7 @@ import mysql
 import mysql.connector
 from tkinter.messagebox import *
 import datetime
-db=mysql.connector.connect(
-    host="localhost",
-    user="root",
-    passwd="123456"
-)
-cur=db.cursor()
-databaseflag=False
-tableflag=False
-cur.execute("show databases;")
-databases=cur.fetchall()
-for database in databases:
-    if(database[0]=='pythonpart2'):
-        databaseflag=True
-
+# DataBase Setup
 if(databaseflag==False):
     cur.execute("create database if not exists PythonPart2")
     showinfo("Info","Database Created")
@@ -51,10 +38,8 @@ class Student:
                 cur.execute("insert into student values({},'{}','{}','{}',{},'{}','{}','{}','{}')".format(self.__Roll,self.__FirstName, self.__LastName,(self.__FirstName+" "+self.__LastName),self.__Age ,self.__Course,self.__Session,datetime.datetime.now(),datetime.datetime.now()))
                 db.commit()
                 print("Info","Student Data Inserted Into Database")
-                #showinfo("Info","Student Data Inserted Into Database")
             else:
                 print("Error","Student Roll Number Is Already Present In DataBase")
-                #showerror("Error","Student Roll Number Is Already Present In DataBase")
         except:
             print("Any Error In Insertion")
 
@@ -97,10 +82,8 @@ class Student:
             cur.execute("delete from student where Roll={}".format( RollNumber))
             db.commit()
             print("Info","Student Deleted From Database..\nStudent Roll--> "+str(stdData[0])+"\nStudent Name--> "+stdData[3])
-            #showinfo("Info","Student Deleted From Database..\nStudent Roll--> "+str(stdData[0])+"\nStudent Name--> "+stdData[3])
         else:
             print("Warning","Student Details Not Found")
-            #showwarning("Warning","Student Details Not Found")
 
     def searchStudent(self,RollNumber):
         cur.execute("select * from student where Roll={}".format(RollNumber))
@@ -108,44 +91,35 @@ class Student:
         print(stdData)
         if(stdData!=None):
             print("Student Data From Database..\n\nStudent Roll  | "+str(stdData[0])+"\n\nStudent Name  | "+stdData[3]+"\n\nStudent Age  | "+str(stdData[4])+"\n\nStudent Course  | "+stdData[5]+"\n\nStudent Session  | "+stdData[6]+"\n\nStudent Entry Date  | "+str(stdData[7])+"\n\nStudent Entry Time  | "+str(stdData[8]))
-            #showinfo("Info","Student Data From Database..\n\nStudent Roll  | "+str(stdData[0])+"\n\nStudent Name  | "+stdData[3]+"\n\nStudent Age  | "+str(stdData[4])+"\n\nStudent Course  | "+stdData[5]+"\n\nStudent Session  | "+stdData[6]+"\n\nStudent Entry Date  | "+str(stdData[7])+"\n\nStudent Entry Time  | "+str(stdData[8]))
         else:
             print("Warning","Student Details Not Found")
-            #showwarning("Warning","Student Details Not Found")
     def updateStudent(self,RollNumber,UpdField,Values):
         cur.execute("select * from student where Roll={}".format(RollNumber))
         stdData=cur.fetchone()
         print(stdData)
         if(stdData!=None):
-            #showinfo("Info","Student Data Present..")
             if(UpdField=="Age"):
                 cur.execute("update student set Age={} where Roll={}".format(Values,RollNumber))
                 db.commit()
                 print("Info","Student Age Updated..")
-                #showinfo("Info","Student Age Updated..")
             elif(UpdField=="FirstName"):
                 cur.execute("update student set FirstName='{}',FullName='{}' where Roll={}".format(Values,(Values+" "+stdData[2]),RollNumber))
                 db.commit()
                 print("Info","Student FirstName Updated..")
-                #showinfo("Info","Student FirstName Updated..")
             elif(UpdField=="LastName"):
                 cur.execute("update student set LastName='{}',FullName='{}' where Roll={}".format(Values,(stdData[1]+" "+Values),RollNumber))
                 db.commit()
                 print("Info","Student LastName Updated..")
-                #showinfo("Info","Student LastName Updated..")
             elif(UpdField=="Course"):
                 cur.execute("update student set Course='{}' where Roll={}".format(Values,RollNumber))
                 db.commit()
                 print("Info","Student Course Updated..")
-                #showinfo("Info","Student Course Updated..")
             elif(UpdField=="Session"):
                 cur.execute("update student set Session='{}' where Roll={}".format(Values,RollNumber))
                 db.commit()
                 print("Info","Student Session Updated..")
-                #showinfo("Info","Student Session Updated..")
         else:
             print("Warning","Student Details Not Found")
-            #showwarning("Warning","Student Details Not Found")
 
 student=Student(236017,"Divya","Shakti",18,"BCA","2023-26")
 Choice=int(input("\n1.Add New Student\n2.Delete Student Through Roll Number\n3.Search Student Through Roll Number\n4.Update Student Details From Any Detail Of That Particular Student\n5.Exit From Application\n\nEnter Your Choice From Above(1-5): "))
@@ -200,9 +174,7 @@ while(Choice!=5):
                 updfield=int(input("\n1.Age\n2.FirstName\n2.LastName\n4.Course\n5.Session\n\nEnter Updation Field From Above(1-5): "))
     elif(Choice==5):
         print("Info","Exited From Application\n")
-        #showinfo("Info","Exited From Application")
     else:
         print("Invalid Choice-->Try Again\n")
     Choice=int(input("\n1.Add New Student\n2.Delete Student Through Roll Number\n3.Search Student Through Roll Number\n4.Update Student Details From Any Detail Of That Particular Student\n5.Exit From Application\n\nEnter Your Choice From Above(1-5): "))
-#One=Student(236017,"Aniket","Kumar",20,"BCA","2023-26") 
-#One.updateStudent(236017,"Course","Samrati")
+
